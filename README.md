@@ -5,3 +5,8 @@
 3. created vpc with name vpc_network 
 4. created webapp and db subnets
 5. created route to connect to internet gateway
+
+
+terraform init
+terraform plan
+terraform apply
