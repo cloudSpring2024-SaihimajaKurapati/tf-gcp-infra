@@ -1,0 +1,35 @@
+name: Terraform Plan and Apply
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Format Terraform files
+        run: terraform fmt 
+      
+      - name: Check Terraform formatting
+        run: terraform fmt -check
+
+      - name: Validate Terraform configuration
+        run: terraform validate
+
+      - name: Plan Terraform changes
+        id: plan
+        run: terraform plan -out=tfplan
