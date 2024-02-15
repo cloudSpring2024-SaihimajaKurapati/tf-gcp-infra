@@ -17,6 +17,7 @@ resource "google_compute_network" "vpc_network" {
   name                    = var.network_name
   routing_mode            = "REGIONAL"  
   auto_create_subnetworks = false
+  delete_default_routes_on_create = true
 }
 
 # Creating subnets
