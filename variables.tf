@@ -8,6 +8,11 @@ variable "region" {
   type        = string
 }
 
+variable "zone" {
+  description = "The zone for the resources"
+  type        = string
+}
+
 variable "credentials_file" {
   description = "Path to the service account JSON key file"
   type        = string
@@ -46,4 +51,9 @@ variable "route_dest_range" {
 variable "route_next_hop" {
   description = "Next hop gateway for the route"
   type        = string
+}
+
+variable "application_port" {
+  description = "Port number on which the application listens"
+  type        = number
 }
