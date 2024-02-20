@@ -38,7 +38,7 @@ resource "google_compute_subnetwork" "db_subnet" {
 # Add route for webapp subnet
 resource "google_compute_route" "webapp_route" {
   name                  = "webapp-route"
-  networ               = google_compute_network.vpc_network.self_link
+  network               = google_compute_network.vpc_network.self_link
   dest_range            = var.route_dest_range
   next_hop_gateway      = var.route_next_hop
 }
