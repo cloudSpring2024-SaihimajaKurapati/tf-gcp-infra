@@ -13,6 +13,11 @@ variable "zone" {
   type        = string
 }
 
+variable "application_port" {
+  description = "The application port for the resources"
+  type        = string
+}
+
 variable "credentials_file" {
   description = "Path to the service account JSON key file"
   type        = string
@@ -20,6 +25,11 @@ variable "credentials_file" {
 
 variable "network_name" {
   description = "Name of the VPC network"
+  type        = string
+}
+
+variable "routing_mode" {
+  description = "routing mode"
   type        = string
 }
 
@@ -53,7 +63,3 @@ variable "route_next_hop" {
   type        = string
 }
 
-variable "application_port" {
-  description = "Port number on which the application listens"
-  type        = number
-}
