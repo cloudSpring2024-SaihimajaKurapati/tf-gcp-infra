@@ -19,6 +19,6 @@ service usage api:
 
 2. cloud os api - for service accounts
 
-3. compute enginer api for vpc's and subnets
+3. compute enginer api for vpc's and subnets.
 
 
