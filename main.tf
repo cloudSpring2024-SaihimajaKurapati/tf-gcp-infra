@@ -69,7 +69,7 @@ resource "google_compute_instance" "web_instance" {
 
   boot_disk {
     initialize_params {
-      image = "projects/cloudgcp-414104/global/images/custom-image-1708539137" 
+      image = var.boot_disk_image
       type  = "pd-balanced"   
       size  = 100              
     }
