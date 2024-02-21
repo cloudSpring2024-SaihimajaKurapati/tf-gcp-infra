@@ -63,3 +63,9 @@ variable "route_next_hop" {
   type        = string
 }
 
+variable "boot_disk_image" {
+  description = "The image for the boot disk."
+  type        = string
+  
+}
+
