@@ -15,7 +15,7 @@ provider "google" {
 
 resource "google_compute_network" "vpc_network" {
   name                    = var.network_name
-  routing_mode            = "REGIONAL"  
+  routing_mode            = var.routing_mode  
   auto_create_subnetworks = false
   delete_default_routes_on_create = true
 }
@@ -43,6 +43,7 @@ resource "google_compute_route" "webapp_route" {
   next_hop_gateway      = var.route_next_hop
 }
 
+
 # Create a firewall rule to block traffic to the SSH port
 resource "google_compute_firewall" "block_ssh_port" {
   name    = "block-ssh-port"
@@ -56,23 +57,43 @@ resource "google_compute_firewall" "block_ssh_port" {
   source_ranges = ["0.0.0.0/0"]  # Allow traffic from any source
 }
 
+
 # Create a Compute Engine instance
 resource "google_compute_instance" "web_instance" {
   name         = "web-instance"
   machine_type = "e2-small"  
   zone         = var.zone
-  tags         = ["ssh-restricted"]
+  tags         = ["appliation-instance"]
+
+  
 
   boot_disk {
     initialize_params {
-      image = "projects/cloudgcp-414104/global/images/custom-image-1708459507"  
+      image = "projects/cloudgcp-414104/global/images/custom-image-1708539137" 
       type  = "pd-balanced"   
       size  = 100              
     }
   }
+  
 
   network_interface {
     subnetwork = google_compute_subnetwork.webapp_subnet.self_link
     access_config {}
   }
 }
+
+resource "google_compute_firewall" "allow_application_port" {
+  name    = "allow-application-port"
+  network = google_compute_network.vpc_network.name
+  
+
+  allow {
+    protocol = "tcp"
+    ports    = [var.application_port]  
+  }
+
+  source_ranges = ["0.0.0.0/0"]  # Allow traffic from any source
+  target_tags         = ["appliation-instance"]
+  
+}
+
