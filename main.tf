@@ -148,7 +148,11 @@ resource "google_compute_instance" "web_instance" {
       size  = 100              
     }
   }
-  
+   service_account {
+    email  = google_service_account.service_account_vm.email
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
+
   network_interface {
     subnetwork = google_compute_subnetwork.webapp_subnet.self_link
     access_config {}
@@ -163,8 +167,45 @@ resource "google_compute_instance" "web_instance" {
     echo "DB_NAME=${google_sql_database.webapp.name}" >> /opt/csye6225/.env
     chmod 600 /opt/csye6225/.env
   EOF
+  depends_on = [google_sql_database_instance.instance, google_sql_user.webapp]
 }
  
+ 
+
+resource "google_dns_record_set" "cloudweba_a" {
+  name         = "cloudweba.me."
+  type         = "A"
+  ttl          = 300 # Time to Live (TTL) in seconds
+  managed_zone = "cloudweba"
+  
+  rrdatas = [
+    google_compute_instance.web_instance.network_interface[0].access_config[0].nat_ip,
+  ]
+}
+
+resource "google_service_account" "service_account_vm" {
+  account_id   = "my-service-account-vm"
+  display_name = "My Service Account for vm"
+}
+
+# Bind IAM roles to the service account
+resource "google_project_iam_binding" "service_account_logging_admin" {
+  project = var.project_id
+  role    = "roles/logging.admin"
+  members = [
+    "serviceAccount:${google_service_account.service_account_vm.email}"
+  ]
+}
+
+resource "google_project_iam_binding" "service_account_metric_writer" {
+  project = var.project_id
+  role    = "roles/monitoring.metricWriter"
+  members = [
+    "serviceAccount:${google_service_account.service_account_vm.email}"
+  ]
+}
+
+
 
 resource "google_compute_firewall" "allow_application_port" {
   name    = "allow-application-port"
