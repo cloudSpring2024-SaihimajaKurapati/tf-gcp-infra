@@ -58,6 +58,11 @@ variable "route_dest_range" {
   type        = string
 }
 
+variable "vm_ip_address" {
+  description = "Name of the external ip address"
+  type        = string
+}
+
 variable "route_next_hop" {
   description = "Next hop gateway for the route"
   type        = string
