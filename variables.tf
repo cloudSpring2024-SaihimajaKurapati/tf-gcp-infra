@@ -23,6 +23,16 @@ variable "credentials_file" {
   type        = string
 }
 
+variable "mailgun_api_key" {
+  description = "mailgun api key"
+  type        = string
+}
+
+variable "mailgun_domain" {
+  description = "mailgun domain"
+  type        = string
+}
+
 variable "network_name" {
   description = "Name of the VPC network"
   type        = string
